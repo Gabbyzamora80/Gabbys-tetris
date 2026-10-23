@@ -20,7 +20,7 @@ A multiplatform Tetris-style game made with Python, featuring a welcome screen, 
 Install the dependencies:
 
 ```bash
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Start the game:
@@ -74,7 +74,7 @@ Un juego multiplataforma de bloques hecho en Python, con pantalla de bienvenida,
 Instalá las dependencias:
 
 ```bash
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Iniciá el juego:
