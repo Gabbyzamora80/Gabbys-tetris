@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Gabby's Tetris
+Comment=Un clásico de bloques, hecho para vos
+Exec="/home/Gabriel/Documents/Codex/2026-10-23/v/outputs/Gabby's Tetris"
+Icon=/home/Gabriel/Documents/Codex/2026-10-23/v/outputs/gabbys-tetris-icon.png
+Terminal=false
+Categories=Game;BlocksGame;
+StartupNotify=true
