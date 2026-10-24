@@ -8,7 +8,7 @@
   <summary>A falling-block game with chiptune music</summary>
 
   <developer id="io.github.gabbyzamora80">
-    <name> Gabby Zamora </name>
+    <name>Gabby Zamora</name>
   </developer>
 
   <description>
@@ -23,7 +23,7 @@
 
   <screenshots>
     <screenshot type="default">
-      <image> https://github.com/Gabbyzamora80/Gabbys-tetris/blob/main/screenshots/screenshot-gabbytetris.png </image>
+      <image>https://github.com/Gabbyzamora80/Gabbys-tetris/blob/main/screenshots/screenshot-gabbytetris.png</image>
       <caption>Gabby's Tetris welcome screen</caption>
     </screenshot>
   </screenshots>
