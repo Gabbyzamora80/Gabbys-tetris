@@ -1,0 +1,32 @@
+app-id: io.github.gabbyzamora80.Gabbys-tetris
+runtime: org.freedesktop.Platform
+runtime-version: '26.08'
+sdk: org.freedesktop.Sdk
+command: gabbys-tetris
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+
+modules:
+  - name: gabbys-tetris
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 gabbys-tetris /app/bin/gabbys-tetris
+      - install -Dm644 Gabbys-tetris.desktop /app/share/applications/Gabbys-tetris.desktop
+      - install -Dm644 gabbys-tetris-icon.png /app/share/icons/hicolor/512x512/apps/com.gabbys.Tetris.png
+      - install -Dm644 io.github.gabbyzamora80.Gabbys-tetris.xml /app/share/metainfo/io.github.gabbyzamora80.Gabbys-tetris.xml
+      - install -Dm644 LICENSE /app/share/licenses/io.github.gabbyzamora80.Gabbys-tetris/LICENSE
+    sources:
+      - type: file
+        path: https://github.com/Gabbyzamora80/Gabbys-tetris/tree/main/data/main.py
+      - type: file
+        path: https://github.com/Gabbyzamora80/Gabbys-tetris/tree/main/assets/gabbys-tetris-icon.png
+        dest-filename: gabbys-tetris-icon.png
+      - type: file
+        path: https://github.com/Gabbyzamora80/Gabbys-tetris/tree/main/LICENSE
+      - type: file
+        path: https://github.com/Gabbyzamora80/Gabbys-tetris/tree/main/data/io.github.gabbyzamora80.Gabbys-tetris.desktop
+      - type: file
+        path: https://github.com/Gabbyzamora80/Gabbys-tetris/tree/main/data/io.github.gabbyzamora80.Gabbys-tetris.metainfo.xml
