@@ -3,8 +3,8 @@ from pathlib import Path
 from pythonforandroid import recipe as recipe_module
 from pythonforandroid.util import load_source
 
-p4a_root = Path(recipe_module.__file__).resolve().parent.parent
-upstream_recipe = p4a_root / "recipes" / "python3" / "__init__.py"
+p4a_package = Path(recipe_module.__file__).resolve().parent
+upstream_recipe = p4a_package / "recipes" / "python3" / "__init__.py"
 upstream = load_source(
     "pythonforandroid.recipes.python3_upstream",
     str(upstream_recipe),
