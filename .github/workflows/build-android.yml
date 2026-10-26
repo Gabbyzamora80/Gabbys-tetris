@@ -1,0 +1,67 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONFORANDROID_PREREQUISITES_INSTALL_INTERACTIVE: "0"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Android build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            zip \
+            unzip \
+            autoconf \
+            automake \
+            cmake \
+            libffi-dev \
+            libltdl-dev \
+            libncurses5-dev \
+            libncursesw5-dev \
+            libssl-dev \
+            libtinfo6 \
+            libtool \
+            pkg-config \
+            zlib1g-dev
+
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install legacy-cgi "cython==0.29.34"
+          python -m pip install git+https://github.com/kivy/buildozer
+
+      - name: Build the debug APK
+        working-directory: android
+        run: buildozer -v android debug
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: gabbys-tetris-android-apk
+          path: android/bin/*.apk
+          if-no-files-found: error
+          retention-days: 14
