@@ -7,8 +7,6 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,wav,txt
 source.exclude_dirs = .git,.buildozer,bin,__pycache__
 version = 1.0.0
-version.regex = __version__ = "([0-9.]+)"
-version.filename = %(source.dir)s/main.py
 icon.filename = icon.png
 orientation = portrait
 fullscreen = 0
