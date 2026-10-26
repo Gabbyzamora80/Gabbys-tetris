@@ -13,7 +13,7 @@ fullscreen = 0
 osx.python_version = 3
 
 
-requirements = python3,kivy
+requirements = python3==3.12.15,hostpython3==3.12.15,kivy
 
 
 presplash.filename = icon.png
