@@ -56,6 +56,9 @@ jobs:
 
       - name: Build the debug APK
         working-directory: android
+        env:
+          ac_cv_func_getgrgid: "no"
+          ac_cv_func_getgrgid_r: "no"
         run: buildozer -v android debug
 
       - name: Upload the APK
