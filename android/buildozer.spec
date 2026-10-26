@@ -16,7 +16,7 @@ requirements = python3,kivy
 
 presplash.filename = icon.png
 android.api = 36
-android.minapi = 23
+android.minapi = 24
 android.ndk = 28c
 android.archs = arm64-v8a,armeabi-v7a
 android.accept_sdk_license = True
