@@ -12,7 +12,9 @@ orientation = portrait
 fullscreen = 0
 osx.python_version = 3
 
+
 requirements = python3,kivy
+
 
 presplash.filename = icon.png
 android.api = 36
@@ -22,7 +24,8 @@ android.archs = arm64-v8a,armeabi-v7a
 android.accept_sdk_license = True
 android.debug_artifact = apk
 android.release_artifact = aab
-p4a.branch = develop
+p4a.branch = master
+
 
 [buildozer]
 log_level = 2
