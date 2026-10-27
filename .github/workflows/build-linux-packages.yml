@@ -1,0 +1,70 @@
+name: Build Linux packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version
+        required: true
+        default: "1.0"
+        type: string
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build-deb:
+    name: Debian and Ubuntu (.deb)
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm-slim
+    steps:
+      - name: Prepare checkout
+        run: apt-get update && apt-get install -y --no-install-recommends git
+      - uses: actions/checkout@v4
+      - name: Install package builder
+        run: apt-get update && apt-get install -y --no-install-recommends dpkg-dev python3 python3-tk python3-pygame
+      - name: Build .deb
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || '1.0' }}
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            PACKAGE_VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          PACKAGE_VERSION="$PACKAGE_VERSION" bash build-linux-package.sh deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gabbys-tetris-debian-ubuntu
+          path: dist/*.deb
+          if-no-files-found: error
+
+  build-rpm:
+    name: Fedora (.rpm)
+    needs: build-deb
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:45
+    steps:
+      - name: Prepare checkout
+        run: dnf install -y git
+      - uses: actions/checkout@v4
+      - name: Install package builder and runtime dependencies
+        run: dnf install -y rpm-build python3 python3-tkinter python3-pygame
+      - name: Build .rpm
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || '1.0' }}
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            PACKAGE_VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          PACKAGE_VERSION="$PACKAGE_VERSION" bash build-linux-package.sh rpm
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gabbys-tetris-fedora
+          path: dist/*.rpm
+          if-no-files-found: error
