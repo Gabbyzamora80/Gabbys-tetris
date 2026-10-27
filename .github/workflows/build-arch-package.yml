@@ -45,12 +45,14 @@ jobs:
           useradd --create-home builder
           chown -R builder:builder "$GITHUB_WORKSPACE"
           runuser -u builder -- makepkg --cleanbuild --force --noconfirm
-      - name: Check package contents
+      - name: Check and install package
         run: |
           package_file=(gabbys-tetris-*.pkg.tar.zst)
           test -f "${package_file[0]}"
           pacman -Qip "${package_file[0]}"
           bsdtar -tf "${package_file[0]}"
+          pacman -U --noconfirm "${package_file[0]}"
+          pacman -Q gabbys-tetris
       - uses: actions/upload-artifact@v4
         with:
           name: gabbys-tetris-arch-cachyos
