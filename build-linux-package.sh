@@ -62,6 +62,7 @@ Description: A falling-block game with chiptune music
  A colorful Tetris-style game with a welcome screen, keyboard controls,
  chiptune music, sound effects, score, lines, and levels.
 EOF
+    install -d "$stage/usr/bin"
     cat > "$stage/usr/bin/gabbys-tetris" <<'EOF'
 #!/bin/sh
 exec /usr/bin/python3 /usr/share/gabbys-tetris/main.py "$@"
