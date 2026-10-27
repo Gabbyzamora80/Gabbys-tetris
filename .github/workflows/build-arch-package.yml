@@ -1,0 +1,58 @@
+name: Build Arch and CachyOS package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version
+        required: true
+        default: "1.0"
+        type: string
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Arch Linux and CachyOS (.pkg.tar.zst)
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:base-devel
+    steps:
+      - name: Prepare checkout
+        run: pacman -Syu --noconfirm --needed ca-certificates git
+      - uses: actions/checkout@v4
+      - name: Install runtime dependencies
+        run: pacman -S --noconfirm --needed python tk python-pygame
+      - name: Set package version
+        env:
+          PACKAGE_VERSION: ${{ inputs.version || '1.0' }}
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            PACKAGE_VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          if [[ ! "$PACKAGE_VERSION" =~ ^[0-9]+([.][0-9]+)*$ ]]; then
+            echo "Invalid package version: $PACKAGE_VERSION" >&2
+            exit 2
+          fi
+          sed -i "s/^pkgver=.*/pkgver=${PACKAGE_VERSION}/" PKGBUILD
+      - name: Build package as an unprivileged user
+        run: |
+          useradd --create-home builder
+          chown -R builder:builder "$GITHUB_WORKSPACE"
+          runuser -u builder -- makepkg --cleanbuild --force --noconfirm
+      - name: Check package contents
+        run: |
+          package_file=(gabbys-tetris-*.pkg.tar.zst)
+          test -f "${package_file[0]}"
+          pacman -Qip "${package_file[0]}"
+          bsdtar -tf "${package_file[0]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gabbys-tetris-arch-cachyos
+          path: gabbys-tetris-*.pkg.tar.zst
+          if-no-files-found: error
